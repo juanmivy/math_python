@@ -1,6 +1,5 @@
-import numpy as np
+
 import math
-import matplotlib.pyplot as plt
 
 class Polinomio():
     
@@ -51,7 +50,7 @@ class Polinomio():
             nuevos_coef += [-i] 
         return Polinomio(self.coeficientes) + Polinomio(nuevos_coef)
     
-    #SObrecarga del operador multiplicacion(falta acabarlo)
+    #Sobrecarga del operador multiplicacion(falta acabarlo)
     def __mul__(self,b):
         if (type(b) == float or type(b) == int):
             nuevos_coef = []
@@ -64,6 +63,26 @@ class Polinomio():
                 for indice_2, coeficiente_2 in enumerate(b.coeficientes):
                     nuevos_coef[indice_1+indice_2] += coeficiente_1 * coeficiente_2
             return(Polinomio(nuevos_coef))  
+    
+    #Sobrecargamos el operador == para ver cuando dos polinomios son iguales
+    def __eq__(self,b):
+        if (self.grado() != b.grado()):
+            return False
+        else:
+            iguales = True
+            for i in range(0,len(self.coeficientes)):
+                if (self.coeficientes[i]!=b.coeficientes[i]):
+                    iguales = False
+                    break
+                else:
+                    iguales = True
+            return(iguales)
+
+    def __ne__(self, b):
+        if self == b:
+            return False
+        else: 
+            return True
 
     #Metodo que devuelce el grado del polinomio
     def grado(self):
@@ -87,6 +106,9 @@ class Polinomio():
                 raiz_2 =(-self.coeficientes[1]-math.sqrt(discriminante))/(2.0*self.coeficientes[2])
                 factores += [raiz_1, raiz_2]
         return factores        
+
+        if self.grado >=3:
+            print('Resolver esto ya puede ser complicado')
 
     #Metodo que imprime la factorizacion del polinomio por pantalla
     def factorizacion(self):
@@ -124,6 +146,5 @@ def get_polinimio():
         else:
             coeficientes += siguiente
     return(Polinomio(coeficientes))
-
 
 
