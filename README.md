@@ -1,3 +1,3 @@
 # Matemáticas usando Python
 
-En este repo bla bla bla cosas de matematicos
+En este repositorio ire subiendo todas las cosas de matemáticas que vaya programando con Python, espero que no se convierta en un cajón desastre.
