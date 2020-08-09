@@ -52,26 +52,18 @@ class Polinomio():
         return Polinomio(self.coeficientes) + Polinomio(nuevos_coef)
     
     #SObrecarga del operador multiplicacion(falta acabarlo)
-    def __rmul__(self,b):
-        if type(b) == float or type(b) == int:
+    def __mul__(self,b):
+        if (type(b) == float or type(b) == int):
             nuevos_coef = []
             for i in self.coeficientes:
                 nuevos_coef += [b * i]
             return Polinomio(nuevos_coef)
         if type(b) == Polinomio:
             nuevos_coef = [0]*(len(self.coeficientes)+len(b.coeficientes)-1)
-            for i, j in enumerate(self.coeficientes):
-                for k, l in enumerate(b.coeficientes):
-                    nuevos_coef[i+k] += j*l 
-            return(Polinomio(nuevos_coef))
-
-    #Sobrecarga del operador potencia(se acaba cuando el de multipl este acabado)
-    def __power__(self, b):
-        resultado = self
-        for i in range (1, b+1):
-            resultado *= self
-        resultado = expand(resultado)
-        return(resultado)
+            for indice_1, coeficiente_1 in enumerate(self.coeficientes):
+                for indice_2, coeficiente_2 in enumerate(b.coeficientes):
+                    nuevos_coef[indice_1+indice_2] += coeficiente_1 * coeficiente_2
+            return(Polinomio(nuevos_coef))  
 
     #Metodo que devuelce el grado del polinomio
     def grado(self):
