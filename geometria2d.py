@@ -10,7 +10,11 @@ class Punto:
 
     def a_vector(self, p):
         return Vector(p.x - self.x, p.y - self.y)
-
+    def __lt__(self, p):
+        if (self.y < p.y):
+            return True
+        else:
+            return False
 class Vector:
     def __init__(self, primera_componenente, segunda_componente):
         self.primera_componente = primera_componenente
@@ -19,6 +23,7 @@ class Vector:
     def __str__(self):
         return('('+str(self.primera_componente)+','+str(self.segunda_componente)+')')
 
+    #Sobrecargamos operadores para trabajar con los vectores
     def __add__(self, otro):
         return(Vector(self.primera_componente + otro.primera_componente, self.segunda_componente + otro.segunda_componente))
 
@@ -45,6 +50,10 @@ class Triangulo:
         self.p2 = p2
         self.p3 = p3
 
+    def __str__(self):
+        resultado  = 'Triangulo de vertices: ' + str(self.p1)+ ', ' +str(self.p2)+ ' y '+ str(self.p3) 
+        return resultado
+
     #Implementamos el area del triangulo con la formula de Herón
     def area(self): 
         lado_1 = self.p1.a_vector(self.p2)
@@ -60,3 +69,53 @@ class Triangulo:
         resultado = semiperimetro*(semiperimetro- longitud_lado_1)*(semiperimetro- longitud_lado_2)*(semiperimetro- longitud_lado_3)
 
         return(math.sqrt(resultado))
+
+
+class Poligono:
+    def __init__(self, vector_puntos):
+        self.vector_puntos = vector_puntos
+
+    def ordenar_puntos(self):
+        self.vector_puntos =  sorted(self.vector_puntos)
+        return self.vector_puntos
+            
+    #vamos a triangular el poligono:
+    def triangulacion(self):
+        self.vector_puntos = sorted(self.vector_puntos)
+        for i in  range(0,len(self.vector_puntos)):
+            print('Punto i: ', self.vector_puntos[i])
+        triang =[]
+        for i in range(0,len(self.vector_puntos)-2):
+            triang += [Triangulo(self.vector_puntos[i], self.vector_puntos[i+1], self.vector_puntos[i+2])] 
+        for i in triang:
+            print(i)
+        return triang
+
+    #Implementamos el area del poligono sumando el area de cada triangulo
+    def area(self):
+        triangulos = self.triangulacion()
+        area = 0
+        for i in triangulos:
+            area += i.area()
+        return area
+class Circunferencia:
+    def __init__(self, centro, radio):
+        self.centro = centro
+        self. radio = radio
+    
+    def __str__(self):
+        resultado = '(x'
+        if (self.centro.x <0):
+            resultado += '+' + str(abs(self.centro.x))+ ')**2+(y'
+        if (self.centro.x == 0):
+            resultado += ')**2+(y'
+        if (self.centro.x >0):
+            resultado += '-'+str(self.centro.x)+ ')**2+(y'
+        if (self.centro.y <0):
+            resultado += '+' + str(abs(self.centro.y))+')**2'
+        if (self.centro.y == 0):
+            resultado += ')**2'
+        if (self.centro.y >0):
+            resultado += '-'+str(self.centro.y)+ ')**2'
+        resultado += '=' + str(self.radio**2)
+        return(resultado)
