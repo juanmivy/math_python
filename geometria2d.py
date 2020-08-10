@@ -1,18 +1,29 @@
 import math
+import matplotlib.pyplot as plt
 
 class Punto:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+
+    def dibujar_segmento(self, q):
+        valores_x = [self.x, self.y]
+        valores_y = [q.x, q.y]
+        plt.plot(valores_x, valores_y)
     
     def __str__(self):
         return('('+str(self.x)+','+str(self.y)+')')
 
     def a_vector(self, p):
         return Vector(p.x - self.x, p.y - self.y)
+
+    #Sobrecargamos el operador menor que para poder ordenar los puntos y posteriormente hacer la triangulacion de la clase polinomio
     def __lt__(self, p):
-        if (self.y < p.y):
-            return True
+        if (self.y < p.y ):
+            if (self.x > p.x):
+                return True
+            else:
+                return False
         else:
             return False
 class Vector:
@@ -70,6 +81,12 @@ class Triangulo:
 
         return(math.sqrt(resultado))
 
+    def baricentro(self):
+        baricentro_x= (self.p1.x+self.p2.x+self.p3.x)/3.0
+        baricentro_y= (self.p1.y+self.p2.y+self.p3.y)/3.0
+        return(Punto(baricentro_x, baricentro_y))
+
+
 
 class Poligono:
     def __init__(self, vector_puntos):
@@ -78,17 +95,37 @@ class Poligono:
     def ordenar_puntos(self):
         self.vector_puntos =  sorted(self.vector_puntos)
         return self.vector_puntos
+
+    def dibujar_poligono(self):
+        
+        self.vector_puntos = sorted(self.vector_puntos)
+
+        for i in self.vector_puntos:
+            print(i)
+        
+        for i in range(0, len(self.vector_puntos)-1):
+            valor_x = [self.vector_puntos[i].x, self.vector_puntos[i+1].x]
+            valor_y = [self.vector_puntos[i].y, self.vector_puntos[i+1].y ]
+            plt.plot(valor_x, valor_y)
+
+        valor_x = [self.vector_puntos[0].x, self.vector_puntos[len(self.vector_puntos)-1].x]
+        valor_y = [self.vector_puntos[0].y, self.vector_puntos[len(self.vector_puntos)-1].y ]
+        plt.plot(valor_x, valor_y)
+        plt.show()
+
+
+
+       # valores_x = [self.x, self.y]
+        #valores_y = [q.x, q.y]
+        #plt.plot(valores_x, valores_y)
+
             
     #vamos a triangular el poligono:
     def triangulacion(self):
         self.vector_puntos = sorted(self.vector_puntos)
-        for i in  range(0,len(self.vector_puntos)):
-            print('Punto i: ', self.vector_puntos[i])
         triang =[]
         for i in range(0,len(self.vector_puntos)-2):
             triang += [Triangulo(self.vector_puntos[i], self.vector_puntos[i+1], self.vector_puntos[i+2])] 
-        for i in triang:
-            print(i)
         return triang
 
     #Implementamos el area del poligono sumando el area de cada triangulo
@@ -98,6 +135,7 @@ class Poligono:
         for i in triangulos:
             area += i.area()
         return area
+
 class Circunferencia:
     def __init__(self, centro, radio):
         self.centro = centro
