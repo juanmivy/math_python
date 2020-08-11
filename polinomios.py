@@ -14,7 +14,16 @@ class Polinomio():
             resultado = str(self.coeficientes[0])+'+'
         else:
             resultado = ''
-        for i in range(1, len(self.coeficientes)):
+
+        #Por estetica escribimos el coeficiente de grado 1 sin el ^1
+
+        if (self.coeficientes[1] != 1):
+            resultado += str(self.coeficientes[1])+'*x+'
+        else:
+            resultado +='x+'
+
+
+        for i in range(2, len(self.coeficientes)):
             if (self.coeficientes[i] != 0):
                 if (self.coeficientes[i] != 1):
                     resultado += str(self.coeficientes[i])+'*x^'+str(i)+'+'
