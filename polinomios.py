@@ -1,5 +1,7 @@
 
 import math
+import numpy as np
+import matplotlib.pyplot as plt
 
 class Polinomio():
     
@@ -134,6 +136,18 @@ class Polinomio():
             resultado += i
         return(resultado)
 
+    def derivada(self):
+        coef_derivada = []
+        for i in range(1, len(self.coeficientes)):
+            coef_derivada += [(i)*self.coeficientes[i]]
+        return(Polinomio(coef_derivada))
+
+    def grafica(self, inicio_intervalo, final_intervalo):
+        x = np.linspace(inicio_intervalo, final_intervalo, 100) 
+        plt.plot(x, self.eval(x))
+        plt.grid()
+        plt.show()
+
 #Funcion para introducir un polinomio
 def get_polinimio():
     print('Introduce los coefientes del polinomio empezando por el de grado cero (f para terminar): ')
@@ -146,5 +160,3 @@ def get_polinimio():
         else:
             coeficientes += siguiente
     return(Polinomio(coeficientes))
-
-

@@ -17,15 +17,7 @@ class Punto:
     def a_vector(self, p):
         return Vector(p.x - self.x, p.y - self.y)
 
-    #Sobrecargamos el operador menor que para poder ordenar los puntos y posteriormente hacer la triangulacion de la clase polinomio
-    def __lt__(self, p):
-        if (self.y < p.y ):
-            if (self.x > p.x):
-                return True
-            else:
-                return False
-        else:
-            return False
+
 class Vector:
     def __init__(self, primera_componenente, segunda_componente):
         self.primera_componente = primera_componenente
@@ -98,31 +90,19 @@ class Poligono:
 
     def dibujar_poligono(self):
         
-        self.vector_puntos = sorted(self.vector_puntos)
-
-        for i in self.vector_puntos:
-            print(i)
-        
         for i in range(0, len(self.vector_puntos)-1):
             valor_x = [self.vector_puntos[i].x, self.vector_puntos[i+1].x]
             valor_y = [self.vector_puntos[i].y, self.vector_puntos[i+1].y ]
             plt.plot(valor_x, valor_y)
 
+        #Unimos el ultimo vertice con el primero
         valor_x = [self.vector_puntos[0].x, self.vector_puntos[len(self.vector_puntos)-1].x]
         valor_y = [self.vector_puntos[0].y, self.vector_puntos[len(self.vector_puntos)-1].y ]
         plt.plot(valor_x, valor_y)
         plt.show()
-
-
-
-       # valores_x = [self.x, self.y]
-        #valores_y = [q.x, q.y]
-        #plt.plot(valores_x, valores_y)
-
             
     #vamos a triangular el poligono:
     def triangulacion(self):
-        self.vector_puntos = sorted(self.vector_puntos)
         triang =[]
         for i in range(0,len(self.vector_puntos)-2):
             triang += [Triangulo(self.vector_puntos[i], self.vector_puntos[i+1], self.vector_puntos[i+2])] 
@@ -157,3 +137,10 @@ class Circunferencia:
             resultado += '-'+str(self.centro.y)+ ')**2'
         resultado += '=' + str(self.radio**2)
         return(resultado)
+
+    def area(self):
+        return(math.pi* self.radio**2 )
+
+    def longitud(self):
+        return(2*math.pi* self.radio)
+    
